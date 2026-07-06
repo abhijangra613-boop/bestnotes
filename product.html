@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Notes — BestNotes | Haryana Group D Premium Notes</title>
+<meta id="pageMeta" name="description" content="Premium handwritten notes for Haryana Group D.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="product">
+<meta id="ogTitle" property="og:title" content="BestNotes — Notes">
+<meta id="ogDesc" property="og:description" content="Premium handwritten notes for Haryana Group D.">
+<meta property="og:url" content="https://bestnotes.in/product.html">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="navbar.css">
+<link rel="stylesheet" href="sections-2.css">
+<link rel="stylesheet" href="new-sections.css">
+<link rel="stylesheet" href="checkout-darkmode.css">
+
+<style>
+/* ── Product Detail Page ── */
+.pd-hero {
+  padding: 140px 0 80px;
+  background: linear-gradient(160deg, #f0f4ff 0%, var(--bg) 60%);
+  position: relative;
+  overflow: hidden;
+}
+.pd-hero::before {
+  content: "";
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.pd-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+/* ── Cover ── */
+.pd-cover-wrap {
+  position: sticky;
+  top: 100px;
+}
+.pd-cover-card {
+  background: var(--card);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.pd-cover-svg-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.pd-cover-svg-wrap svg { width: 100%; height: 100%; display: block; }
+
+.pd-cover-actions {
+  padding: 20px 24px;
+  display: flex;
+  gap: 10px;
+}
+.pd-preview-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 18px;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 600;
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-dark);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-soft);
+  font-family: var(--font-body);
+}
+.pd-preview-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(37,99,235,0.04);
+}
+
+.pd-share-btn {
+  width: 46px; height: 46px;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.pd-share-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ── Info Panel ── */
+.pd-info { }
+
+.pd-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+.pd-breadcrumb a { color: var(--primary); }
+.pd-breadcrumb svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+.pd-badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.pd-badge {
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.pd-badge-gold { background: rgba(201,162,39,0.12); color: #9C7E1E; }
+.pd-badge-green { background: rgba(22,163,74,0.1); color: var(--success); }
+.pd-badge-blue  { background: rgba(37,99,235,0.1); color: var(--primary); }
+
+.pd-title {
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 12px;
+  letter-spacing: -0.03em;
+}
+
+.pd-subtitle {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.pd-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.pd-rating-num {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.pd-rating-count {
+  font-size: 13.5px;
+  color: var(--text);
+}
+.pd-updated {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--text);
+  background: rgba(22,163,74,0.08);
+  color: var(--success);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-weight: 600;
+}
+
+/* ── Language selector on detail page ── */
+.pd-lang-section {
+  margin-bottom: 24px;
+}
+.pd-lang-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: block;
+}
+.pd-lang-radio-group {
+  display: flex;
+  gap: 20px;
+}
+.pd-lang-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-dark);
+  transition: color 0.15s;
+  user-select: none;
+}
+.pd-lang-radio { display: none; }
+.pd-lang-radio-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s;
+  position: relative;
+}
+.pd-lang-radio-dot::after {
+  content: "";
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.15s, transform 0.15s var(--ease);
+}
+.pd-lang-radio:checked + .pd-lang-radio-dot { border-color: var(--primary); }
+.pd-lang-radio:checked + .pd-lang-radio-dot::after { opacity: 1; transform: scale(1); }
+.pd-lang-radio:checked ~ .pd-lang-radio-text { color: var(--primary); font-weight: 600; }
+.pd-lang-radio-label:hover .pd-lang-radio-dot { border-color: var(--primary); }
+
+/* ── Pricing box ── */
+.pd-pricing-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 24px 26px;
+  margin-bottom: 20px;
+}
+.pd-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.pd-price-now {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--ink);
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.pd-price-was {
+  font-size: 20px;
+  color: var(--text);
+  text-decoration: line-through;
+}
+.pd-price-discount {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--success);
+  background: rgba(22,163,74,0.1);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+}
+.pd-price-note {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.pd-buy-btn {
+  width: 100%;
+  padding: 18px;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border-radius: var(--r-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.pd-trust-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 14px;
+}
+.pd-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text);
+}
+.pd-trust-item svg { width: 13px; height: 13px; color: var(--success); flex-shrink: 0; }
+
+/* ── What's included ── */
+.pd-includes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+.pd-include-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 14px;
+  color: var(--text-dark);
+  line-height: 1.4;
+}
+.pd-include-item svg { color: var(--success); flex-shrink: 0; margin-top: 2px; }
+
+/* ── Sections below fold ── */
+.pd-body { padding: 80px 0; }
+
+.pd-section { margin-bottom: 64px; }
+.pd-section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pd-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.pd-feature-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pd-feature-icon { font-size: 24px; }
+.pd-feature-title { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+.pd-feature-desc  { font-size: 12.5px; color: var(--text); line-height: 1.5; }
+
+/* ── Related products ── */
+.pd-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.pd-related-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  text-decoration: none;
+  display: block;
+}
+.pd-related-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.pd-related-thumb { aspect-ratio: 16/10; overflow: hidden; }
+.pd-related-thumb svg { width: 100%; height: 100%; display: block; }
+.pd-related-body { padding: 14px 16px; }
+.pd-related-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.pd-related-price { font-size: 13px; color: var(--primary); font-weight: 600; }
+
+/* ── Reviews ── */
+.pd-reviews-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.pd-review-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 22px 24px;
+}
+.pd-review-stars { color: var(--gold); display: flex; gap: 2px; margin-bottom: 10px; }
+.pd-review-stars svg { width: 14px; height: 14px; fill: var(--gold); }
+.pd-review-text { font-size: 14px; color: var(--text-dark); line-height: 1.6; margin-bottom: 14px; }
+.pd-reviewer { display: flex; align-items: center; gap: 10px; }
+.pd-reviewer img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+.pd-reviewer-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.pd-reviewer-meta { font-size: 11.5px; color: var(--text); }
+
+/* ── FAQ on product page ── */
+.pd-faq-list { }
+
+/* ── Not found ── */
+.pd-not-found {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 60px 24px;
+}
+.pd-not-found h2 { font-size: 26px; color: var(--ink); }
+.pd-not-found p  { color: var(--text); }
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .pd-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .pd-cover-wrap { position: static; }
+  .pd-features-grid { grid-template-columns: 1fr 1fr; }
+  .pd-reviews-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .pd-hero { padding: 120px 0 60px; }
+  .pd-features-grid { grid-template-columns: 1fr; }
+  .pd-includes-grid { grid-template-columns: 1fr; }
+  .pd-related-grid { grid-template-columns: 1fr 1fr; }
+  .pd-price-now { font-size: 32px; }
+}
+@media (max-width: 420px) {
+  .pd-related-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Dark mode ── */
+.dark .pd-hero { background: linear-gradient(160deg, #0f1a2e 0%, #111827 60%); }
+.dark .pd-title { color: #F9FAFB; }
+.dark .pd-cover-card { background: #1F2937; border-color: rgba(255,255,255,0.08); }
+.dark .pd-pricing-box { background: #1F2937; border-color: rgba(255,255,255,0.08); }
+.dark .pd-price-now { color: #F9FAFB; }
+.dark .pd-section-title { color: #F9FAFB; border-color: rgba(255,255,255,0.08); }
+.dark .pd-feature-item { background: #1F2937; border-color: rgba(255,255,255,0.08); }
+.dark .pd-feature-title { color: #F9FAFB; }
+.dark .pd-related-card { background: #1F2937; border-color: rgba(255,255,255,0.08); }
+.dark .pd-related-title { color: #F9FAFB; }
+.dark .pd-review-card { background: #1F2937; border-color: rgba(255,255,255,0.08); }
+.dark .pd-reviewer-name { color: #F9FAFB; }
+.dark .pd-include-item { color: #D1D5DB; }
+.dark .pd-lang-radio-dot { border-color: rgba(255,255,255,0.25); }
+.dark .pd-lang-radio:checked + .pd-lang-radio-dot { border-color: var(--primary-light); }
+.dark .pd-lang-radio:checked + .pd-lang-radio-dot::after { background: var(--primary-light); }
+.dark .pd-lang-radio:checked ~ .pd-lang-radio-text { color: var(--primary-light); }
+.dark .pd-lang-radio-label { color: #D1D5DB; }
+.dark .pd-preview-btn { border-color: rgba(255,255,255,0.12); color: #D1D5DB; }
+.dark .pd-breadcrumb { color: #6B7280; }
+.dark .pd-subtitle { color: #9CA3AF; }
+.dark .pd-rating-count { color: #6B7280; }
+.dark .pd-price-note { color: #6B7280; }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE LOADER ============ -->
+<div class="page-loader" id="pageLoader">
+  <div class="loader-mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+  </div>
+</div>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar scrolled" id="navbar" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo" aria-label="BestNotes Home">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </span>
+      BestNotes
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html#home">Home</a></li>
+      <li><a href="index.html#products">All Notes</a></li>
+      <li><a href="index.html#bundle">Bundle</a></li>
+      <li><a href="index.html#reviews">Reviews</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+      <button class="btn btn-primary btn-sm" id="pdNavBuyBtn">Buy Now</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile menu">
+  <div class="mobile-menu-head">
+    <span class="logo"><span class="logo-mark" style="width:30px;height:30px;"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width:15px;height:15px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>BestNotes</span>
+    <button id="mobileClose" aria-label="Close menu" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(17,24,39,0.05);"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  </div>
+  <a href="index.html#home">Home</a>
+  <a href="index.html#products">All Notes</a>
+  <a href="index.html#bundle">Bundle</a>
+  <a href="index.html#reviews">Reviews</a>
+  <a href="index.html#faq">FAQ</a>
+  <button class="btn btn-primary" style="margin-top:20px;width:100%;" id="pdMobileBuyBtn">Buy Now</button>
+</div>
+
+<!-- ============ MAIN CONTENT (populated by JS) ============ -->
+<main id="pdMain"></main>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastMsg">Done</span>
+</div>
+
+<!-- ============ FLOATING SUPPORT ============ -->
+<div class="support-fab-wrap">
+  <a href="https://wa.me/910000000000" class="fab fab-whatsapp" aria-label="WhatsApp support">
+    <span class="fab-label">Chat on WhatsApp</span>
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.84.5 3.55 1.36 5.02L2 22l5.25-1.38a9.84 9.84 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2z"/></svg>
+  </a>
+  <a href="https://t.me/bestnotes" class="fab fab-telegram" aria-label="Telegram">
+    <span class="fab-label">Join Telegram</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+  </a>
+</div>
+
+<script src="products-data.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  /* ── Dark mode ── */
+  const themeToggle = document.getElementById("themeToggle");
+  let storedTheme = "light";
+  try {
+    const saved = localStorage.getItem("bn_theme");
+    if (saved) storedTheme = saved;
+    else if (window.matchMedia("(prefers-color-scheme: dark)").matches) storedTheme = "dark";
+  } catch (e) {}
+  document.documentElement.classList.toggle("dark", storedTheme === "dark");
+  themeToggle && themeToggle.addEventListener("click", () => {
+    const next = document.documentElement.classList.toggle("dark") ? "dark" : "light";
+    try { localStorage.setItem("bn_theme", next); } catch (e) {}
+  });
+
+  /* ── Page loader ── */
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("pageLoader");
+    setTimeout(() => loader && loader.classList.add("hide"), 350);
+  });
+
+  /* ── Mobile menu ── */
+  const navToggle   = document.getElementById("navToggle");
+  const mobileMenu  = document.getElementById("mobileMenu");
+  const mobileOvl   = document.getElementById("mobileOverlay");
+  const mobileClose = document.getElementById("mobileClose");
+  function openM()  { mobileMenu.classList.add("open"); mobileOvl.classList.add("open"); document.body.style.overflow = "hidden"; }
+  function closeM() { mobileMenu.classList.remove("open"); mobileOvl.classList.remove("open"); document.body.style.overflow = ""; }
+  navToggle   && navToggle.addEventListener("click", openM);
+  mobileClose && mobileClose.addEventListener("click", closeM);
+  mobileOvl   && mobileOvl.addEventListener("click", closeM);
+  mobileMenu  && mobileMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", closeM));
+
+  /* ── Toast ── */
+  const toast = document.getElementById("toast");
+  const toastMsg = document.getElementById("toastMsg");
+  let toastTimer;
+  function showToast(msg, type) {
+    if (!toast) return;
+    toastMsg.textContent = msg;
+    toast.className = "toast show" + (type === "error" ? " toast-error" : "");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
+  }
+
+  /* ── Helpers ── */
+  function starSvg() {
+    return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+  }
+  function discPct(price, was) { return Math.round((1 - price / was) * 100); }
+
+  /* ── Subject metadata (same as app.js) ── */
+  const SUBJECT_META = {
+    "group-d-haryana-gk":    { icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>', color1: "#1a3a6b", color2: "#2563EB", accent: "#C9A227", label: "हरियाणा GK" },
+    "group-d-reasoning":     { icon: '<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/><circle cx="12" cy="12" r="10"/>', color1: "#1a2a5e", color2: "#1D4ED8", accent: "#60A5FA", label: "Reasoning" },
+    "group-d-math":          { icon: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>', color1: "#0f2a4a", color2: "#155E75", accent: "#34D399", label: "Mathematics" },
+    "group-d-hindi":         { icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/>', color1: "#2d1a4a", color2: "#6D28D9", accent: "#F9A8D4", label: "हिन्दी व्याकरण" },
+    "group-d-science":       { icon: '<path d="M8.5 2v5L6 10l2.5 3v5h7v-5L18 10l-2.5-3V2"/><path d="M5 18h14"/>', color1: "#0a2a1a", color2: "#065F46", accent: "#6EE7B7", label: "General Science" },
+    "group-d-current-affairs": { icon: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>', color1: "#1a0f2a", color2: "#7C3AED", accent: "#FDE68A", label: "Current Affairs" },
+    "group-d-english":       { icon: '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>', color1: "#0a1a3a", color2: "#1E40AF", accent: "#FCA5A5", label: "English Grammar" },
+    "group-d-computer":      { icon: '<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>', color1: "#111827", color2: "#374151", accent: "#67E8F9", label: "Computer" }
+  };
+
+  function coverHTML(p) {
+    const m = SUBJECT_META[p.id] || { icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>', color1: "#1a3a6b", color2: "#2563EB", accent: "#C9A227", label: p.title };
+    const id = "g-" + p.id.replace(/[^a-z0-9]/g,"");
+    return `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs><linearGradient id="${id}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${m.color1}"/><stop offset="100%" stop-color="${m.color2}"/></linearGradient></defs>
+      <rect width="320" height="200" fill="url(#${id})"/>
+      <g opacity="0.06" stroke="white" stroke-width="0.5"><line x1="0" y1="40" x2="320" y2="40"/><line x1="0" y1="80" x2="320" y2="80"/><line x1="0" y1="120" x2="320" y2="120"/><line x1="0" y1="160" x2="320" y2="160"/><line x1="64" y1="0" x2="64" y2="200"/><line x1="128" y1="0" x2="128" y2="200"/><line x1="192" y1="0" x2="192" y2="200"/><line x1="256" y1="0" x2="256" y2="200"/></g>
+      <circle cx="260" cy="50" r="60" fill="${m.accent}" opacity="0.12"/>
+      <circle cx="60" cy="160" r="40" fill="${m.accent}" opacity="0.08"/>
+      <rect x="16" y="14" width="26" height="26" rx="7" fill="white" opacity="0.18"/>
+      <text x="29" y="31" text-anchor="middle" font-family="Georgia,serif" font-weight="800" font-size="13" fill="white" opacity="0.95">B</text>
+      <svg x="116" y="40" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${m.icon}</svg>
+      <rect x="124" y="92" width="32" height="3" rx="2" fill="${m.accent}" opacity="0.8"/>
+      <text x="160" y="120" text-anchor="middle" font-family="Poppins,Arial,sans-serif" font-weight="700" font-size="14" fill="white" opacity="0.95">${m.label}</text>
+      <rect x="0" y="162" width="320" height="38" fill="black" opacity="0.25"/>
+      <text x="16" y="178" font-family="Inter,Arial,sans-serif" font-size="9.5" fill="white" opacity="0.7" font-weight="500">BESTNOTES</text>
+      <text x="16" y="191" font-family="Inter,Arial,sans-serif" font-size="9" fill="white" opacity="0.55">Haryana Group D · 2026 Edition</text>
+      <rect x="220" y="168" width="82" height="22" rx="6" fill="${m.accent}" opacity="0.9"/>
+      <text x="261" y="182" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="700" font-size="9" fill="white">UPDATED ${p.updatedDate.toUpperCase()}</text>
+    </svg>`;
+  }
+
+  /* ── Read product id from URL ── */
+  const params    = new URLSearchParams(window.location.search);
+  const productId = params.get("id");
+  const product   = (typeof PRODUCTS !== "undefined") && PRODUCTS.find(p => p.id === productId);
+
+  const main = document.getElementById("pdMain");
+
+  if (!product) {
+    main.innerHTML = `
+      <div class="pd-not-found">
+        <div style="font-size:64px;">📚</div>
+        <h2>Notes not found</h2>
+        <p>The product you're looking for doesn't exist or has moved.</p>
+        <a href="index.html#products" class="btn btn-primary" style="margin-top:16px;">Browse All Notes</a>
+      </div>`;
+    return;
+  }
+
+  /* ── Update page meta ── */
+  document.getElementById("pageTitle").textContent = product.title + " — BestNotes | Haryana Group D Notes";
+  document.getElementById("pageMeta").setAttribute("content", product.description);
+  document.getElementById("ogTitle").setAttribute("content", product.title + " — BestNotes");
+  document.getElementById("ogDesc").setAttribute("content", product.description);
+
+  /* ── Determine default language ── */
+  let currentLang = product.languages[0];
+
+  /* ── Language radio HTML ── */
+  const langHTML = product.languages.length > 1 ? `
+    <div class="pd-lang-section">
+      <span class="pd-lang-label">Select Language</span>
+      <div class="pd-lang-radio-group" id="pdLangGroup">
+        ${product.languages.map((lang, i) => `
+          <label class="pd-lang-radio-label">
+            <input type="radio" class="pd-lang-radio" name="pd-lang" value="${lang}" ${i === 0 ? "checked" : ""}>
+            <span class="pd-lang-radio-dot"></span>
+            <span class="pd-lang-radio-text">${lang === "hi" ? "हिन्दी" : "English"}</span>
+          </label>`).join("")}
+      </div>
+    </div>` : `<div style="font-size:14px;color:var(--text);margin-bottom:20px;">Available in: ${product.pricing[currentLang].label}</div>`;
+
+  /* ── Badges HTML ── */
+  const badgesHTML = [
+    product.bestSeller ? `<span class="pd-badge pd-badge-gold">⭐ Bestseller</span>` : "",
+    product.newArrival ? `<span class="pd-badge pd-badge-green">✨ New</span>` : "",
+    product.featured   ? `<span class="pd-badge pd-badge-blue">🔥 Popular</span>` : "",
+    `<span class="pd-badge pd-badge-blue">Haryana Group D</span>`
+  ].filter(Boolean).join("");
+
+  const pr  = product.pricing[currentLang];
+  const pct = discPct(pr.price, pr.priceWas);
+
+  /* ── Related products (same category, excluding self, up to 3) ── */
+  const related = PRODUCTS.filter(p => p.id !== product.id && p.category === product.category).slice(0, 3);
+
+  /* ── What's included items ── */
+  const includes = [
+    "PYQs mapped to HSSC pattern",
+    "Color-coded highlights",
+    "Exam shortcuts & tricks",
+    "Topic-wise summary boxes",
+    "Last revision notes",
+    `Updated ${product.updatedDate}`
+  ];
+
+  /* ── Features ── */
+  const features = [
+    { icon: "✍️", title: "Handwritten", desc: "Real pen-on-paper — easier to retain than typed notes." },
+    { icon: "🎯", title: "Exam Focused", desc: "Mapped directly to HSSC Group D syllabus only." },
+    { icon: "🧠", title: "PYQs Included", desc: "Previous year questions woven into each chapter." },
+    { icon: "🌈", title: "Color Coded", desc: "Key facts highlighted for fast last-night revision." },
+    { icon: "📱", title: "Instant PDF", desc: "Download immediately after Instamojo payment." },
+    { icon: "♾️", title: "Lifetime Access", desc: "No subscriptions. Re-download any time." }
+  ];
+
+  /* ── Build hero HTML ── */
+  main.innerHTML = `
+  <section class="pd-hero">
+    <div class="container">
+      <div class="pd-hero-grid">
+
+        <!-- Cover -->
+        <div class="pd-cover-wrap">
+          <div class="pd-cover-card">
+            <div class="pd-cover-svg-wrap">${coverHTML(product)}</div>
+            <div class="pd-cover-actions">
+              <button class="pd-preview-btn" id="pdPreviewBtn">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Preview Sample Pages
+              </button>
+              <button class="pd-share-btn" id="pdShareBtn" title="Share">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="pd-info">
+          <nav class="pd-breadcrumb" aria-label="Breadcrumb">
+            <a href="index.html">Home</a>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            <a href="index.html#products">All Notes</a>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            <span>${product.title}</span>
+          </nav>
+
+          <div class="pd-badges">${badgesHTML}</div>
+
+          <h1 class="pd-title">${product.title}</h1>
+          <p class="pd-subtitle">${product.description}</p>
+
+          <div class="pd-rating-row">
+            <span class="pd-rating-num">${product.rating.toFixed(1)}</span>
+            <div class="stars" style="color:var(--gold);display:flex;gap:2px;">
+              ${Array(5).fill('<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>').join("")}
+            </div>
+            <span class="pd-rating-count">(${product.reviews.toLocaleString("en-IN")} reviews)</span>
+            <span class="pd-updated">📅 Updated ${product.updatedDate}</span>
+          </div>
+
+          ${langHTML}
+
+          <div class="pd-pricing-box">
+            <div class="pd-price-row">
+              <span class="pd-price-now" id="pdPriceNow">₹${pr.price}</span>
+              <span class="pd-price-was" id="pdPriceWas">₹${pr.priceWas}</span>
+              <span class="pd-price-discount" id="pdDiscount">${pct}% off</span>
+            </div>
+            <p class="pd-price-note">Instant PDF · Lifetime access · Secure via Instamojo</p>
+          </div>
+
+          <button class="btn btn-primary pd-buy-btn" id="pdBuyBtn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
+            Buy Now — ₹<span id="pdBuyBtnPrice">${pr.price}</span>
+          </button>
+
+          <div class="pd-trust-row">
+            <div class="pd-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Instant download</div>
+            <div class="pd-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Secure Instamojo</div>
+            <div class="pd-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Lifetime access</div>
+          </div>
+
+          <!-- What's Included -->
+          <div style="margin-top:32px;">
+            <h3 style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:14px;">What's Included</h3>
+            <div class="pd-includes-grid">
+              ${includes.map(item => `
+                <div class="pd-include-item">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                  ${item}
+                </div>`).join("")}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <div class="pd-body">
+    <div class="container">
+
+      <!-- Features -->
+      <div class="pd-section">
+        <h2 class="pd-section-title">Why students love these notes</h2>
+        <div class="pd-features-grid">
+          ${features.map(f => `
+            <div class="pd-feature-item">
+              <div class="pd-feature-icon">${f.icon}</div>
+              <div class="pd-feature-title">${f.title}</div>
+              <div class="pd-feature-desc">${f.desc}</div>
+            </div>`).join("")}
+        </div>
+      </div>
+
+      <!-- Reviews -->
+      <div class="pd-section">
+        <h2 class="pd-section-title">What students say</h2>
+        <div class="pd-reviews-grid">
+          <div class="pd-review-card">
+            <div class="pd-review-stars">${Array(5).fill(starSvg()).join("")}</div>
+            <p class="pd-review-text">"Colour-coded notes really helped — I could skim a whole chapter the night before the Group D exam and still remember every key date."</p>
+            <div class="pd-reviewer">
+              <img src="https://i.pravatar.cc/80?img=12" alt="Priya Sharma" loading="lazy">
+              <div><div class="pd-reviewer-name">Priya Sharma</div><div class="pd-reviewer-meta">Group D Aspirant, Hisar</div></div>
+            </div>
+          </div>
+          <div class="pd-review-card">
+            <div class="pd-review-stars">${Array(5).fill(starSvg()).join("")}</div>
+            <p class="pd-review-text">"The PYQs inside are honestly more useful than the three months I spent watching YouTube. Everything mapped to the actual exam pattern."</p>
+            <div class="pd-reviewer">
+              <img src="https://i.pravatar.cc/80?img=33" alt="Rohit Kumar" loading="lazy">
+              <div><div class="pd-reviewer-name">Rohit Kumar</div><div class="pd-reviewer-meta">HSSC Qualified, Rohtak</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related -->
+      ${related.length > 0 ? `
+      <div class="pd-section">
+        <h2 class="pd-section-title">More Group D Notes</h2>
+        <div class="pd-related-grid">
+          ${related.map(rp => `
+            <a href="product.html?id=${rp.id}" class="pd-related-card">
+              <div class="pd-related-thumb">${coverHTML(rp)}</div>
+              <div class="pd-related-body">
+                <div class="pd-related-title">${rp.title}</div>
+                <div class="pd-related-price">₹${rp.pricing[rp.languages[0]].price} <span style="color:var(--text);text-decoration:line-through;font-weight:400;">₹${rp.pricing[rp.languages[0]].priceWas}</span></div>
+              </div>
+            </a>`).join("")}
+        </div>
+      </div>` : ""}
+
+      <!-- FAQ -->
+      <div class="pd-section">
+        <h2 class="pd-section-title">Frequently Asked Questions</h2>
+        <div class="faq-list">
+          ${[
+            ["Is this available in Hindi?", product.languages.includes("hi") ? "Yes — you can select हिन्दी before purchasing." : "This product is currently available in English only."],
+            ["When will I get the PDF after payment?", "Immediately — Instamojo redirects you to the download page the moment your payment clears. No waiting."],
+            ["Can I download the PDF again?", "Yes — download again from your dashboard or contact us on WhatsApp and we'll send it directly."],
+            ["Is my payment secure?", "Yes — payment is processed by Instamojo, a trusted Indian payment platform. We never see your card or UPI details."],
+            ["What if the PDF quality is poor?", "Every PDF is handwritten, high-resolution, and colour-coded. If you face any quality issue, contact us on WhatsApp for an immediate replacement."]
+          ].map(([q, a]) => `
+            <div class="faq-item">
+              <button class="faq-q">${q}<span class="faq-q-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button>
+              <div class="faq-a-wrap"><p class="faq-a">${a}</p></div>
+            </div>`).join("")}
+        </div>
+      </div>
+
+    </div>
+  </div>`;
+
+  /* ── Wire language radios ── */
+  document.querySelectorAll(".pd-lang-radio").forEach(radio => {
+    radio.addEventListener("change", () => {
+      currentLang = radio.value;
+      const p2 = product.pricing[currentLang];
+      if (!p2) return;
+      const pct2 = discPct(p2.price, p2.priceWas);
+      const nowEl  = document.getElementById("pdPriceNow");
+      const wasEl  = document.getElementById("pdPriceWas");
+      const discEl = document.getElementById("pdDiscount");
+      const btnPEl = document.getElementById("pdBuyBtnPrice");
+      if (nowEl)  nowEl.textContent  = "₹" + p2.price;
+      if (wasEl)  wasEl.textContent  = "₹" + p2.priceWas;
+      if (discEl) discEl.textContent = pct2 + "% off";
+      if (btnPEl) btnPEl.textContent = p2.price;
+    });
+  });
+
+  /* ── Buy function ── */
+  function doBuy() {
+    const link = product.buyLink[currentLang];
+    if (!link || link.includes("PLACEHOLDER")) {
+      showToast("Payment link not set up yet — check products-data.js", "error");
+      return;
+    }
+    try {
+      sessionStorage.setItem("bn_pending_purchase", JSON.stringify({
+        productId: product.id,
+        productTitle: product.title,
+        lang: currentLang,
+        amount: product.pricing[currentLang].price,
+        timestamp: Date.now()
+      }));
+    } catch (e) {}
+    window.location.href = link;
+  }
+
+  document.getElementById("pdBuyBtn")     && document.getElementById("pdBuyBtn").addEventListener("click", doBuy);
+  document.getElementById("pdNavBuyBtn")  && document.getElementById("pdNavBuyBtn").addEventListener("click", doBuy);
+  document.getElementById("pdMobileBuyBtn") && document.getElementById("pdMobileBuyBtn").addEventListener("click", doBuy);
+
+  /* ── Preview button ── */
+  document.getElementById("pdPreviewBtn") && document.getElementById("pdPreviewBtn").addEventListener("click", () => {
+    if (!product.previewPDF || product.previewPDF.includes("PLACEHOLDER")) {
+      showToast("Preview not available yet");
+      return;
+    }
+    window.open(product.previewPDF, "_blank", "noopener");
+  });
+
+  /* ── Share button ── */
+  document.getElementById("pdShareBtn") && document.getElementById("pdShareBtn").addEventListener("click", () => {
+    if (navigator.share) {
+      navigator.share({ title: product.title, text: product.description, url: window.location.href }).catch(() => {});
+    } else {
+      navigator.clipboard && navigator.clipboard.writeText(window.location.href)
+        .then(() => showToast("Link copied to clipboard!"))
+        .catch(() => showToast("Copy the URL from the address bar"));
+    }
+  });
+
+  /* ── FAQ accordion ── */
+  document.querySelectorAll(".faq-item").forEach(item => {
+    const q = item.querySelector(".faq-q");
+    const wrap = item.querySelector(".faq-a-wrap");
+    q && q.addEventListener("click", () => {
+      const isOpen = item.classList.contains("open");
+      document.querySelectorAll(".faq-item").forEach(o => {
+        o.classList.remove("open");
+        const w = o.querySelector(".faq-a-wrap");
+        if (w) w.style.maxHeight = null;
+      });
+      if (!isOpen) { item.classList.add("open"); wrap.style.maxHeight = wrap.scrollHeight + "px"; }
+    });
+  });
+
+  /* ── Ripple ── */
+  document.addEventListener("click", e => {
+    const btn = e.target.closest(".btn, .pd-preview-btn");
+    if (!btn) return;
+    const r = document.createElement("span");
+    r.className = "ripple";
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+    btn.style.position = "relative";
+    btn.style.overflow = "hidden";
+    btn.appendChild(r);
+    r.addEventListener("animationend", () => r.remove(), { once: true });
+  });
+
+})();
+</script>
+</body>
+</html>

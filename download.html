@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download Your Notes — BestNotes</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="navbar.css">
+<link rel="stylesheet" href="checkout-darkmode.css">
+<style>
+  .download-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 24px 60px;
+    position: relative;
+  }
+  .download-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse 900px 600px at 50% 0%, rgba(37,99,235,0.06), transparent 60%), var(--bg);
+  }
+  .download-card {
+    max-width: 520px;
+    width: 100%;
+    padding: 48px 40px;
+    text-align: center;
+  }
+  .success-ring {
+    width: 88px; height: 88px;
+    border-radius: 50%;
+    background: rgba(22,163,74,0.1);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+    animation: popIn 0.55s var(--ease);
+  }
+  @keyframes popIn { 0% { transform: scale(0); } 70% { transform: scale(1.08); } 100% { transform: scale(1); } }
+  .success-ring svg { width: 42px; height: 42px; color: var(--success); }
+  .download-card h1 { font-size: 28px; margin-bottom: 8px; }
+  .download-card .sub { font-size: 15px; color: var(--text); margin-bottom: 32px; }
+
+  .order-summary {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 20px 22px;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+  .order-row { display: flex; justify-content: space-between; font-size: 13.5px; padding: 7px 0; }
+  .order-row span:first-child { color: var(--text); }
+  .order-row span:last-child { font-weight: 600; color: var(--ink); }
+  .order-row.total { border-top: 1px solid var(--border); margin-top: 6px; padding-top: 13px; }
+  .order-row.total span:last-child { color: var(--primary); font-size: 16px; }
+
+  .download-actions { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+  .download-actions .btn { width: 100%; }
+
+  .download-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    font-size: 12.5px;
+    color: var(--text);
+    flex-wrap: wrap;
+  }
+  .download-meta-row span { display: flex; align-items: center; gap: 6px; }
+  .download-meta-row svg { width: 14px; height: 14px; }
+
+  .download-progress {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    background: rgba(37,99,235,0.06);
+    border-radius: var(--r-md);
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  .download-progress.active { display: flex; }
+  .download-progress .spin {
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(37,99,235,0.2);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .back-home { display: inline-block; margin-top: 8px; font-size: 13.5px; color: var(--text); }
+  .back-home:hover { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+      BestNotes
+    </a>
+    <a href="dashboard.html" class="btn btn-secondary btn-sm">My Dashboard</a>
+  </div>
+</nav>
+
+<div class="download-page">
+  <div class="download-bg"></div>
+
+  <div class="card download-card">
+    <div class="success-ring">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+
+    <h1>Payment Successful</h1>
+    <p class="sub">Thank you — your notes are ready to download.</p>
+
+    <!-- Payment verified badge — shown only when Razorpay params present + verified -->
+    <div id="paymentConfirmed" style="display:none;align-items:center;justify-content:center;gap:8px;background:rgba(22,163,74,0.08);border:1.5px solid rgba(22,163,74,0.25);border-radius:var(--r-pill);padding:10px 20px;font-size:13px;font-weight:600;color:#16A34A;margin-bottom:20px;">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+      Razorpay payment verified ✓
+    </div>
+
+    <!-- No-payment wall — populated by JS if Instamojo params absent -->
+    <div id="noPaymentWall"></div>
+
+    <div class="order-summary" id="orderSummary">
+      <div class="order-row"><span>Payment ID</span><span id="sumOrderId">—</span></div>
+      <div class="order-row"><span>Item</span><span id="sumProduct">—</span></div>
+      <div class="order-row"><span>Date</span><span id="sumDate">—</span></div>
+      <div class="order-row total"><span>Amount Paid</span><span id="sumAmount">—</span></div>
+    </div>
+
+    <div class="download-progress" id="downloadProgress">
+      <span class="spin"></span>
+      <span>Opening your PDF…</span>
+    </div>
+
+    <div class="download-actions">
+      <button class="btn btn-primary" id="downloadPdfBtn">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Download PDF <span class="dl-count" style="font-size:11px;opacity:0.75;margin-left:4px;"></span>
+      </button>
+      <button class="btn btn-secondary" id="viewReceiptBtn">View Receipt</button>
+    </div>
+
+    <div class="download-meta-row">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Direct PDF download</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Razorpay verified</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Max 3 downloads</span>
+    </div>
+
+    <a href="index.html" class="back-home">← Back to homepage</a>
+  </div>
+</div>
+
+<!-- Receipt modal -->
+<div class="modal-overlay" id="receiptOverlay">
+  <div class="checkout-modal" style="max-width:400px;">
+    <div class="checkout-header" style="background:linear-gradient(135deg,#1F2937,var(--ink));">
+      <div class="checkout-header-info">
+        <span class="checkout-merchant-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+        <div><h4>Receipt</h4><span>BestNotes</span></div>
+      </div>
+      <button class="checkout-close" id="receiptClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div style="padding:26px;">
+      <div class="order-row"><span>Order ID</span><span id="rOrderId">—</span></div>
+      <div class="order-row"><span>Item</span><span id="rProduct">—</span></div>
+      <div class="order-row"><span>Payment Method</span><span>UPI</span></div>
+      <div class="order-row"><span>Date</span><span id="rDate">—</span></div>
+      <div class="order-row total"><span>Total Paid</span><span id="rAmount">—</span></div>
+      <button class="btn btn-secondary" style="width:100%;margin-top:20px;" id="printReceiptBtn">Print / Save as PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastMsg">Download started</span>
+</div>
+
+<script src="products-data.js"></script>
+<script>
+// ============================================================
+// download.html script — Razorpay edition
+//
+// This page is reached in TWO ways:
+//
+// WAY 1 — Inline download (primary, recommended):
+//   The Razorpay popup opened on index.html.
+//   After successful payment verification (server-side, in app.js),
+//   the PDF download is triggered IMMEDIATELY without navigating here.
+//   This page is NOT used in that flow.
+//
+// WAY 2 — Fallback receipt page:
+//   If the user lands here via URL params (e.g. from a saved link,
+//   or you explicitly redirect to this page), it shows order details
+//   and allows re-download if Razorpay params are present in the URL.
+//
+//   URL params expected:
+//     ?product=PRODUCT_ID        (the product id from products-data.js)
+//     &lang=hi                   (language)
+//     &razorpay_payment_id=xxx   (from Razorpay success handler)
+//     &razorpay_order_id=xxx
+//     &razorpay_signature=xxx
+//
+//   SECURITY: This page re-verifies the Razorpay signature via the
+//   verify-payment function before revealing the download button.
+//   The PDF path is read from products-data.js (already in memory)
+//   only AFTER server-side signature verification passes.
+// ============================================================
+(function () {
+  "use strict";
+
+  /* ── Theme persistence ───────────────────────────────── */
+  try {
+    if (window.localStorage.getItem("bn_theme") === "dark")
+      document.documentElement.classList.add("dark");
+  } catch (e) {}
+
+  /* ── Toast helper ────────────────────────────────────── */
+  const toast    = document.getElementById("toast");
+  const toastMsg = document.getElementById("toastMsg");
+  function showToast(msg, type) {
+    if (!toast) return;
+    toastMsg.textContent = msg;
+    toast.className = "toast show" + (type === "error" ? " toast-error" : "");
+    setTimeout(() => toast.classList.remove("show"), 3500);
+  }
+
+  /* ── Parse URL params ────────────────────────────────── */
+  const params             = new URLSearchParams(window.location.search);
+  const productId          = params.get("product");
+  const lang               = params.get("lang") || "hi";
+  const razorpayPaymentId  = params.get("razorpay_payment_id");
+  const razorpayOrderId    = params.get("razorpay_order_id");
+  const razorpaySignature  = params.get("razorpay_signature");
+
+  /* ── Resolve product + PDF path from in-memory database ─ */
+  let resolvedProduct = null;
+  let resolvedPdfPath = null;
+
+  if (productId) {
+    if (typeof PRODUCTS !== "undefined")
+      resolvedProduct = PRODUCTS.find(p => p.id === productId) || null;
+    if (!resolvedProduct && typeof BUNDLE !== "undefined" && BUNDLE.id === productId)
+      resolvedProduct = BUNDLE;
+  }
+
+  if (resolvedProduct) {
+    const activeLang = resolvedProduct.pdf && resolvedProduct.pdf[lang]
+      ? lang
+      : (resolvedProduct.languages ? resolvedProduct.languages[0] : "hi");
+    resolvedPdfPath = resolvedProduct.pdf && resolvedProduct.pdf[activeLang]
+      ? resolvedProduct.pdf[activeLang]
+      : null;
+  }
+
+  /* ── Build order summary UI ──────────────────────────── */
+  const title   = (resolvedProduct && resolvedProduct.title) || "Your Notes";
+  const amount  = (resolvedProduct && resolvedProduct.pricing && resolvedProduct.pricing[lang])
+                  ? resolvedProduct.pricing[lang].price : null;
+  const dateStr = new Date().toLocaleDateString("en-IN",
+                    { day: "numeric", month: "short", year: "numeric" });
+
+  const fillEl = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+
+  fillEl("sumOrderId", razorpayPaymentId || razorpayOrderId || "—");
+  fillEl("sumProduct",  title);
+  fillEl("sumDate",     dateStr);
+  fillEl("sumAmount",   amount ? "₹" + amount : "—");
+  fillEl("rOrderId",    razorpayOrderId    || "—");
+  fillEl("rProduct",    title);
+  fillEl("rDate",       dateStr);
+  fillEl("rAmount",     amount ? "₹" + amount : "—");
+
+  /* ── DOM refs ─────────────────────────────────────────── */
+  const downloadBtn  = document.getElementById("downloadPdfBtn");
+  const progress     = document.getElementById("downloadProgress");
+  const noPayWall    = document.getElementById("noPaymentWall");
+  const paySuccessEl = document.getElementById("paymentConfirmed");
+
+  /* ── Guard: Razorpay params must all be present ─────── */
+  const hasRazorpayParams = !!(razorpayPaymentId && razorpayOrderId && razorpaySignature);
+
+  if (!hasRazorpayParams) {
+    // No payment params — show the wall
+    if (paySuccessEl) paySuccessEl.style.display = "none";
+    if (noPayWall) {
+      noPayWall.style.display = "block";
+      noPayWall.innerHTML = `
+        <div style="text-align:center;padding:28px 20px;border-radius:var(--r-lg);
+             background:rgba(239,68,68,0.06);border:1.5px solid rgba(239,68,68,0.2);margin-bottom:24px;">
+          <div style="font-size:28px;margin-bottom:10px;">🔒</div>
+          <p style="font-weight:700;color:#DC2626;margin-bottom:6px;">No payment detected</p>
+          <p style="font-size:14px;color:var(--text);margin-bottom:16px;">
+            Complete your purchase to access the download.<br>
+            If you've already paid and were redirected here by mistake,
+            please contact us on WhatsApp.
+          </p>
+          <a href="index.html#products" class="btn btn-primary btn-sm">← Browse Notes</a>
+        </div>`;
+    }
+    if (downloadBtn) {
+      downloadBtn.disabled = true;
+      downloadBtn.textContent = "Payment required";
+      downloadBtn.style.opacity = "0.5";
+      downloadBtn.style.cursor  = "not-allowed";
+    }
+    return;
+  }
+
+  /* ── Verify signature server-side, then unlock download ─ */
+  (async function verifyAndUnlock() {
+    if (paySuccessEl) paySuccessEl.style.display = "none";
+    if (downloadBtn) {
+      downloadBtn.disabled = true;
+      downloadBtn.textContent = "Verifying payment…";
+    }
+
+    try {
+      const res = await fetch("/.netlify/functions/verify-payment", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          razorpay_order_id:   razorpayOrderId,
+          razorpay_payment_id: razorpayPaymentId,
+          razorpay_signature:  razorpaySignature
+        })
+      });
+
+      const data = await res.json();
+
+      if (!data.verified) {
+        throw new Error(data.error || "Payment signature invalid");
+      }
+
+      /* ── Verified ─────────────────────────────────────── */
+      if (paySuccessEl) paySuccessEl.style.display = "flex";
+
+      // Update text to confirm Razorpay (not Instamojo)
+      const verifyLabel = paySuccessEl && paySuccessEl.querySelector("svg + *");
+      if (verifyLabel) verifyLabel.textContent = "Razorpay payment verified ✓";
+
+      if (downloadBtn) {
+        downloadBtn.disabled = false;
+        downloadBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="white"
+               stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          Download PDF <span class="dl-count" style="font-size:11px;opacity:0.75;margin-left:4px;"></span>`;
+      }
+
+      /* ── Wire download button ─────────────────────────── */
+      let downloadCount = 0;
+      const MAX_DL = 3;
+
+      downloadBtn && downloadBtn.addEventListener("click", () => {
+        if (downloadCount >= MAX_DL) {
+          showToast("Download limit reached (max 3 per purchase). Contact support if needed.");
+          return;
+        }
+
+        if (!resolvedPdfPath) {
+          showToast("PDF not configured — contact support on WhatsApp", "error");
+          return;
+        }
+
+        downloadBtn.disabled = true;
+        if (progress) progress.classList.add("active");
+
+        setTimeout(() => {
+          if (progress) progress.classList.remove("active");
+          downloadCount++;
+
+          // Trigger inline download (same-origin PDF)
+          const a = document.createElement("a");
+          a.href     = resolvedPdfPath;
+          a.download = `${title.replace(/\s+/g, "-")}-${lang}.pdf`;
+          a.target   = "_blank";
+          a.rel      = "noopener";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          const remaining = MAX_DL - downloadCount;
+          const countEl   = downloadBtn.querySelector(".dl-count");
+          if (countEl) countEl.textContent = `(${downloadCount}/${MAX_DL})`;
+
+          showToast(remaining > 0
+            ? `PDF downloading! ${remaining} download${remaining !== 1 ? "s" : ""} remaining.`
+            : "Last download used. Contact support if you need another copy.");
+
+          if (downloadCount >= MAX_DL) {
+            downloadBtn.disabled = true;
+            downloadBtn.style.opacity = "0.6";
+          } else {
+            downloadBtn.disabled = false;
+          }
+        }, 800);
+      });
+
+    } catch (err) {
+      console.error("Verification failed:", err);
+      if (noPayWall) {
+        noPayWall.style.display = "block";
+        noPayWall.innerHTML = `
+          <div style="text-align:center;padding:24px 20px;border-radius:var(--r-lg);
+               background:rgba(239,68,68,0.06);border:1.5px solid rgba(239,68,68,0.2);margin-bottom:24px;">
+            <div style="font-size:28px;margin-bottom:8px;">⚠️</div>
+            <p style="font-weight:700;color:#DC2626;margin-bottom:6px;">Verification failed</p>
+            <p style="font-size:14px;color:var(--text);margin-bottom:16px;">
+              ${err.message || "Payment signature could not be verified."}<br>
+              If you've paid, please contact us on WhatsApp with your payment ID.
+            </p>
+            <a href="https://wa.me/910000000000" class="btn btn-primary btn-sm" target="_blank" rel="noopener">
+              WhatsApp Support
+            </a>
+          </div>`;
+      }
+      if (downloadBtn) {
+        downloadBtn.disabled  = true;
+        downloadBtn.textContent = "Verification failed";
+        downloadBtn.style.opacity = "0.5";
+      }
+    }
+  })();
+
+  /* ── Receipt modal ───────────────────────────────────── */
+  const receiptOverlay = document.getElementById("receiptOverlay");
+  const viewReceiptBtn = document.getElementById("viewReceiptBtn");
+  const receiptClose   = document.getElementById("receiptClose");
+
+  viewReceiptBtn && viewReceiptBtn.addEventListener("click", () => {
+    if (receiptOverlay) receiptOverlay.classList.add("open");
+    document.body.style.overflow = "hidden";
+  });
+  receiptClose && receiptClose.addEventListener("click", () => {
+    if (receiptOverlay) receiptOverlay.classList.remove("open");
+    document.body.style.overflow = "";
+  });
+  receiptOverlay && receiptOverlay.addEventListener("click", e => {
+    if (e.target === receiptOverlay) {
+      receiptOverlay.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+  });
+  const printBtn = document.getElementById("printReceiptBtn");
+  printBtn && printBtn.addEventListener("click", () => window.print());
+
+})();
+</script>
+</body>
+</html>

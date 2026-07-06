@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard — BestNotes</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="checkout-darkmode.css">
+<style>
+  body { background: var(--bg); }
+
+  .dash-shell { display: flex; min-height: 100vh; }
+
+  .dash-sidebar {
+    width: 264px;
+    flex-shrink: 0;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+  .dash-logo { padding: 8px 12px 28px; }
+
+  .dash-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .dash-nav-link {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--r-sm);
+    font-size: 14.5px; font-weight: 500;
+    color: var(--text-dark);
+    transition: all var(--dur-fast);
+  }
+  .dash-nav-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .dash-nav-link:hover { background: var(--bg); }
+  .dash-nav-link.active { background: rgba(37,99,235,0.08); color: var(--primary); font-weight: 600; }
+
+  .dash-sidebar-foot { padding: 12px; border-top: 1px solid var(--border); margin-top: 12px; }
+  .dash-user-chip { display: flex; align-items: center; gap: 10px; padding: 8px; }
+  .dash-user-chip img { width: 36px; height: 36px; border-radius: 50%; }
+  .dash-user-chip .name { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .dash-user-chip .email { font-size: 12px; color: var(--text); }
+
+  .dash-main { flex: 1; padding: 36px 40px; max-width: 1100px; }
+  .dash-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+  .dash-topbar h1 { font-size: 26px; }
+  .dash-topbar p { font-size: 14px; color: var(--text); margin-top: 4px; }
+
+  .dash-section { display: none; }
+  .dash-section.active { display: block; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 32px; }
+  .stat-card { padding: 22px; }
+  .stat-card .stat-label { font-size: 12.5px; color: var(--text); font-weight: 600; margin-bottom: 8px; }
+  .stat-card .stat-value { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--ink); }
+
+  .table-card { padding: 0; overflow: hidden; }
+  .table-head-row { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .table-head-row h3 { font-size: 15.5px; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 12px; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.04em; padding: 14px 22px; border-bottom: 1px solid var(--border); }
+  td { padding: 16px 22px; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--text-dark); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg); }
+
+  .order-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 5px 12px; border-radius: var(--r-pill); }
+  .status-paid { background: rgba(22,163,74,0.1); color: var(--success); }
+
+  .download-list { display: flex; flex-direction: column; gap: 14px; }
+  .download-row { display: flex; align-items: center; gap: 16px; padding: 18px; }
+  .dl-thumb { width: 46px; height: 56px; background: linear-gradient(135deg,#1F2937,var(--ink)); border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .dl-thumb svg { width: 18px; height: 18px; color: white; }
+  .dl-info { flex: 1; }
+  .dl-info h4 { font-size: 14.5px; font-weight: 600; margin-bottom: 3px; }
+  .dl-info span { font-size: 12.5px; color: var(--text); }
+  .dl-remaining { font-size: 12.5px; font-weight: 600; color: var(--text); white-space: nowrap; }
+
+  .profile-form { display: flex; flex-direction: column; gap: 18px; max-width: 440px; padding: 28px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 7px; }
+  .form-group input { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border-strong); border-radius: var(--r-sm); font-family: inherit; font-size: 14px; outline: none; background: var(--card); color: var(--ink); transition: border-color var(--dur-fast); }
+  .form-group input:focus { border-color: var(--primary); }
+
+  @media (max-width: 980px) {
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    table { display: block; overflow-x: auto; white-space: nowrap; }
+  }
+  @media (max-width: 780px) {
+    .dash-sidebar { display: none; }
+    .dash-main { padding: 24px 20px; }
+    .stat-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="dash-shell">
+  <aside class="dash-sidebar">
+    <a href="index.html" class="logo dash-logo">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+      BestNotes
+    </a>
+
+    <nav class="dash-nav">
+      <a class="dash-nav-link active" data-target="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Overview</a>
+      <a class="dash-nav-link" data-target="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>My Orders</a>
+      <a class="dash-nav-link" data-target="downloads"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Downloads</a>
+      <a class="dash-nav-link" data-target="purchased"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Purchased Notes</a>
+      <a class="dash-nav-link" data-target="invoices"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Invoices</a>
+      <a class="dash-nav-link" data-target="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+    </nav>
+
+    <div class="dash-sidebar-foot">
+      <div class="dash-user-chip">
+        <img src="https://i.pravatar.cc/72?img=14" alt="">
+        <div><div class="name">Rohit Kumar</div><div class="email">rohit@example.com</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="dash-main">
+    <!-- OVERVIEW -->
+    <section class="dash-section active" id="overview">
+      <div class="dash-topbar">
+        <div><h1>Welcome back, Rohit</h1><p>Here's a quick look at your account.</p></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="card stat-card"><div class="stat-label">Total Orders</div><div class="stat-value">4</div></div>
+        <div class="card stat-card"><div class="stat-label">Notes Owned</div><div class="stat-value">4</div></div>
+        <div class="card stat-card"><div class="stat-label">Downloads Left</div><div class="stat-value">9</div></div>
+        <div class="card stat-card"><div class="stat-label">Total Spent</div><div class="stat-value">₹826</div></div>
+      </div>
+
+      <div class="card table-card">
+        <div class="table-head-row"><h3>Recent Orders</h3><a href="#" class="btn btn-ghost btn-sm" data-target="orders" onclick="document.querySelector('[data-target=orders]').click(); return false;">View all</a></div>
+        <table>
+          <thead><tr><th>Item</th><th>Order ID</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Haryana CET Complete Notes</td><td>ORD7F3KQ2X1</td><td>28 Jun 2026</td><td>₹299</td><td><span class="order-status status-paid">Paid</span></td></tr>
+            <tr><td>Reasoning Notes</td><td>ORD9D1MZ8R4</td><td>14 Jun 2026</td><td>₹179</td><td><span class="order-status status-paid">Paid</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ORDERS -->
+    <section class="dash-section" id="orders">
+      <div class="dash-topbar"><div><h1>My Orders</h1><p>Every purchase you've made on BestNotes.</p></div></div>
+      <div class="card table-card">
+        <table>
+          <thead><tr><th>Item</th><th>Order ID</th><th>Date</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>Haryana CET Complete Notes</td><td>ORD7F3KQ2X1</td><td>28 Jun 2026</td><td>₹299</td><td><span class="order-status status-paid">Paid</span></td><td><button class="btn btn-ghost btn-sm">Invoice</button></td></tr>
+            <tr><td>Reasoning Notes</td><td>ORD9D1MZ8R4</td><td>14 Jun 2026</td><td>₹179</td><td><span class="order-status status-paid">Paid</span></td><td><button class="btn btn-ghost btn-sm">Invoice</button></td></tr>
+            <tr><td>Haryana GK Premium Notes</td><td>ORD2L9XT6B7</td><td>02 Jun 2026</td><td>₹199</td><td><span class="order-status status-paid">Paid</span></td><td><button class="btn btn-ghost btn-sm">Invoice</button></td></tr>
+            <tr><td>English Grammar Notes</td><td>ORD5K8WP3N0</td><td>19 May 2026</td><td>₹149</td><td><span class="order-status status-paid">Paid</span></td><td><button class="btn btn-ghost btn-sm">Invoice</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- DOWNLOADS -->
+    <section class="dash-section" id="downloads">
+      <div class="dash-topbar"><div><h1>Downloads</h1><p>Each purchase allows up to 3 secure downloads.</p></div></div>
+      <div class="card download-list" style="padding:8px;">
+        <div class="download-row">
+          <div class="dl-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div class="dl-info"><h4>Haryana CET Complete Notes</h4><span>Purchased 28 Jun 2026</span></div>
+          <div class="dl-remaining">2 of 3 left</div>
+          <button class="btn btn-secondary btn-sm">Download</button>
+        </div>
+        <div class="download-row">
+          <div class="dl-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div class="dl-info"><h4>Reasoning Notes</h4><span>Purchased 14 Jun 2026</span></div>
+          <div class="dl-remaining">3 of 3 left</div>
+          <button class="btn btn-secondary btn-sm">Download</button>
+        </div>
+        <div class="download-row">
+          <div class="dl-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div class="dl-info"><h4>Haryana GK Premium Notes</h4><span>Purchased 02 Jun 2026</span></div>
+          <div class="dl-remaining">0 of 3 left</div>
+          <button class="btn btn-secondary btn-sm" disabled>Limit reached</button>
+        </div>
+        <div class="download-row">
+          <div class="dl-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div class="dl-info"><h4>English Grammar Notes</h4><span>Purchased 19 May 2026</span></div>
+          <div class="dl-remaining">1 of 3 left</div>
+          <button class="btn btn-secondary btn-sm">Download</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PURCHASED NOTES -->
+    <section class="dash-section" id="purchased">
+      <div class="dash-topbar"><div><h1>Purchased Notes</h1><p>Your complete note library, all in one place.</p></div></div>
+      <div class="card table-card">
+        <table>
+          <thead><tr><th>Note Set</th><th>Category</th><th>Purchase Date</th><th>Lifetime Access</th></tr></thead>
+          <tbody>
+            <tr><td>Haryana CET Complete Notes</td><td>CET</td><td>28 Jun 2026</td><td><span class="badge badge-success">Active</span></td></tr>
+            <tr><td>Reasoning Notes</td><td>Reasoning</td><td>14 Jun 2026</td><td><span class="badge badge-success">Active</span></td></tr>
+            <tr><td>Haryana GK Premium Notes</td><td>GK</td><td>02 Jun 2026</td><td><span class="badge badge-success">Active</span></td></tr>
+            <tr><td>English Grammar Notes</td><td>English</td><td>19 May 2026</td><td><span class="badge badge-success">Active</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- INVOICES -->
+    <section class="dash-section" id="invoices">
+      <div class="dash-topbar"><div><h1>Invoices</h1><p>Download a receipt for any past order.</p></div></div>
+      <div class="card table-card">
+        <table>
+          <thead><tr><th>Invoice</th><th>Order ID</th><th>Date</th><th>Amount</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>INV-1042</td><td>ORD7F3KQ2X1</td><td>28 Jun 2026</td><td>₹299</td><td><button class="btn btn-ghost btn-sm">Download PDF</button></td></tr>
+            <tr><td>INV-1031</td><td>ORD9D1MZ8R4</td><td>14 Jun 2026</td><td>₹179</td><td><button class="btn btn-ghost btn-sm">Download PDF</button></td></tr>
+            <tr><td>INV-1019</td><td>ORD2L9XT6B7</td><td>02 Jun 2026</td><td>₹199</td><td><button class="btn btn-ghost btn-sm">Download PDF</button></td></tr>
+            <tr><td>INV-0988</td><td>ORD5K8WP3N0</td><td>19 May 2026</td><td>₹149</td><td><button class="btn btn-ghost btn-sm">Download PDF</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="dash-section" id="profile">
+      <div class="dash-topbar"><div><h1>Profile</h1><p>Manage your account details.</p></div></div>
+      <div class="card profile-form">
+        <div class="form-group"><label>Full Name</label><input type="text" value="Rohit Kumar"></div>
+        <div class="form-group"><label>Email Address</label><input type="email" value="rohit@example.com"></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" value="+91 98765 43210"></div>
+        <button class="btn btn-primary" style="margin-top:8px;width:fit-content;">Save Changes</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastMsg">Saved</span>
+</div>
+
+<script>
+(function () {
+  const links = document.querySelectorAll(".dash-nav-link");
+  const sections = document.querySelectorAll(".dash-section");
+
+  function activate(target) {
+    links.forEach((l) => l.classList.toggle("active", l.getAttribute("data-target") === target));
+    sections.forEach((s) => s.classList.toggle("active", s.id === target));
+  }
+
+  links.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      activate(link.getAttribute("data-target"));
+    });
+  });
+
+  // Deep-link support via hash, e.g. dashboard.html#downloads
+  const hash = window.location.hash.replace("#", "");
+  if (hash && document.getElementById(hash)) activate(hash);
+
+  // Theme persistence from homepage
+  try {
+    const t = window.localStorage.getItem("bn_theme");
+    if (t === "dark") document.documentElement.classList.add("dark");
+  } catch (e) {}
+
+  // Wire up download buttons -> toast feedback (demo)
+  document.querySelectorAll(".download-row .btn:not([disabled])").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const toast = document.getElementById("toast");
+      document.getElementById("toastMsg").textContent = "Download started";
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    });
+  });
+
+  // Save profile button feedback
+  document.querySelectorAll(".profile-form .btn-primary").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const toast = document.getElementById("toast");
+      document.getElementById("toastMsg").textContent = "Profile updated";
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    });
+  });
+})();
+</script>
+</body>
+</html>
